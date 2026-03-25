@@ -1,0 +1,265 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 100vh;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 100vh;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "red", "font": {"color": "white"}, "id": 0, "label": "0", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027The Shawshank Redemption\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 1, "label": "1", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Frank Darabont\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 2, "label": "2", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Tim Robbins\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 3, "label": "3", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Morgan Freeman\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 4, "label": "4", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Bob Gunton\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 5, "label": "5", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Drama\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 6, "label": "6", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027The Godfather\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 7, "label": "7", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Francis Ford Coppola\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 8, "label": "8", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Marlon Brando\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 9, "label": "9", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Al Pacino\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 10, "label": "10", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027James Caan\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 11, "label": "11", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Crime, Drama\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 12, "label": "12", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027The Dark Knight\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 13, "label": "13", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Christopher Nolan\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 14, "label": "14", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Christian Bale\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 15, "label": "15", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Heath Ledger\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 16, "label": "16", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Aaron Eckhart\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 17, "label": "17", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Action, Crime, Drama\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 18, "label": "18", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027The Godfather: Part II\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 19, "label": "19", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Robert De Niro\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 20, "label": "20", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Robert Duvall\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 21, "label": "21", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u002712 Angry Men\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 22, "label": "22", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Sidney Lumet\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 23, "label": "23", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Henry Fonda\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 24, "label": "24", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Lee J. Cobb\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 25, "label": "25", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Martin Balsam\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 26, "label": "26", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027The Lord of the Rings: The Return of the King\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 27, "label": "27", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Peter Jackson\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 28, "label": "28", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Elijah Wood\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 29, "label": "29", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Viggo Mortensen\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 30, "label": "30", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Ian McKellen\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 31, "label": "31", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Action, Adventure, Drama\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 32, "label": "32", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Pulp Fiction\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 33, "label": "33", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Quentin Tarantino\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 34, "label": "34", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027John Travolta\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 35, "label": "35", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Uma Thurman\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 36, "label": "36", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Samuel L. Jackson\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 37, "label": "37", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \"Schindler\u0027s List\"}"}, {"color": "red", "font": {"color": "white"}, "id": 38, "label": "38", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Steven Spielberg\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 39, "label": "39", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Liam Neeson\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 40, "label": "40", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Ralph Fiennes\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 41, "label": "41", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Ben Kingsley\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 42, "label": "42", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Biography, Drama, History\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 43, "label": "43", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Inception\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 44, "label": "44", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Leonardo DiCaprio\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 45, "label": "45", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Joseph Gordon-Levitt\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 46, "label": "46", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Elliot Page\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 47, "label": "47", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Action, Adventure, Sci-Fi\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 48, "label": "48", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Fight Club\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 49, "label": "49", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027David Fincher\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 50, "label": "50", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Brad Pitt\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 51, "label": "51", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Edward Norton\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 52, "label": "52", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Meat Loaf\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 53, "label": "53", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027The Lord of the Rings: The Fellowship of the Ring\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 54, "label": "54", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Orlando Bloom\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 55, "label": "55", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Forrest Gump\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 56, "label": "56", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Robert Zemeckis\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 57, "label": "57", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Tom Hanks\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 58, "label": "58", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Robin Wright\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 59, "label": "59", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Gary Sinise\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 60, "label": "60", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Drama, Romance\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 61, "label": "61", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Il buono, il brutto, il cattivo\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 62, "label": "62", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Sergio Leone\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 63, "label": "63", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Clint Eastwood\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 64, "label": "64", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Eli Wallach\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 65, "label": "65", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Lee Van Cleef\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 66, "label": "66", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Western\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 67, "label": "67", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027The Lord of the Rings: The Two Towers\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 68, "label": "68", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027The Matrix\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 69, "label": "69", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Lana Wachowski\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 70, "label": "70", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Lilly Wachowski\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 71, "label": "71", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Keanu Reeves\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 72, "label": "72", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Laurence Fishburne\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 73, "label": "73", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Action, Sci-Fi\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 74, "label": "74", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Goodfellas\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 75, "label": "75", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Martin Scorsese\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 76, "label": "76", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Ray Liotta\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 77, "label": "77", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Joe Pesci\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 78, "label": "78", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Biography, Crime, Drama\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 79, "label": "79", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Star Wars: Episode V - The Empire Strikes Back\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 80, "label": "80", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Irvin Kershner\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 81, "label": "81", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Mark Hamill\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 82, "label": "82", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Harrison Ford\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 83, "label": "83", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Carrie Fisher\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 84, "label": "84", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Action, Adventure, Fantasy\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 85, "label": "85", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \"One Flew Over the Cuckoo\u0027s Nest\"}"}, {"color": "red", "font": {"color": "white"}, "id": 86, "label": "86", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Milos Forman\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 87, "label": "87", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Jack Nicholson\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 88, "label": "88", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Louise Fletcher\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 89, "label": "89", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Michael Berryman\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 90, "label": "90", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Hamilton\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 91, "label": "91", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Thomas Kail\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 92, "label": "92", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Lin-Manuel Miranda\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 93, "label": "93", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Phillipa Soo\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 94, "label": "94", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Leslie Odom Jr.\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 95, "label": "95", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Gisaengchung\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 96, "label": "96", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Bong Joon Ho\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 97, "label": "97", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Kang-ho Song\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 98, "label": "98", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Lee Sun-kyun\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 99, "label": "99", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Cho Yeo-jeong\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 100, "label": "100", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Comedy, Drama, Thriller\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 101, "label": "101", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Soorarai Pottru\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 102, "label": "102", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Sudha Kongara\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 103, "label": "103", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Suriya\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 104, "label": "104", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Madhavan\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 105, "label": "105", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Paresh Rawal\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 106, "label": "106", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Interstellar\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 107, "label": "107", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Matthew McConaughey\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 108, "label": "108", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Anne Hathaway\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 109, "label": "109", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Jessica Chastain\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 110, "label": "110", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Adventure, Drama, Sci-Fi\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 111, "label": "111", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Cidade de Deus\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 112, "label": "112", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Fernando Meirelles\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 113, "label": "113", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027K\u00e1tia Lund\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 114, "label": "114", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Alexandre Rodrigues\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 115, "label": "115", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Leandro Firmino\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 116, "label": "116", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Sen to Chihiro no kamikakushi\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 117, "label": "117", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Hayao Miyazaki\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 118, "label": "118", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Daveigh Chase\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 119, "label": "119", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Suzanne Pleshette\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 120, "label": "120", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Miyu Irino\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 121, "label": "121", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Animation, Adventure, Family\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 122, "label": "122", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Saving Private Ryan\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 123, "label": "123", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Matt Damon\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 124, "label": "124", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Tom Sizemore\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 125, "label": "125", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Drama, War\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 126, "label": "126", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027The Green Mile\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 127, "label": "127", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Michael Clarke Duncan\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 128, "label": "128", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027David Morse\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 129, "label": "129", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Crime, Drama, Fantasy\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 130, "label": "130", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027La vita \u00e8 bella\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 131, "label": "131", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Roberto Benigni\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 132, "label": "132", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Roberto Benigni\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 133, "label": "133", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Nicoletta Braschi\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 134, "label": "134", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Giorgio Cantarini\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 135, "label": "135", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Comedy, Drama, Romance\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 136, "label": "136", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Se7en\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 137, "label": "137", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Kevin Spacey\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 138, "label": "138", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Crime, Drama, Mystery\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 139, "label": "139", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027The Silence of the Lambs\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 140, "label": "140", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027Jonathan Demme\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 141, "label": "141", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Jodie Foster\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 142, "label": "142", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Anthony Hopkins\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 143, "label": "143", "shape": "dot", "title": "Labels: frozenset({\u0027Actor\u0027})\nProps: {\u0027name\u0027: \u0027Lawrence A. Bonney\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 144, "label": "144", "shape": "dot", "title": "Labels: frozenset({\u0027Genre\u0027})\nProps: {\u0027name\u0027: \u0027Crime, Drama, Thriller\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 145, "label": "145", "shape": "dot", "title": "Labels: frozenset({\u0027Movie\u0027})\nProps: {\u0027title\u0027: \u0027Star Wars\u0027}"}, {"color": "red", "font": {"color": "white"}, "id": 146, "label": "146", "shape": "dot", "title": "Labels: frozenset({\u0027Director\u0027})\nProps: {\u0027name\u0027: \u0027George Lucas\u0027}"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": 0, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 1}, {"arrows": "to", "from": 0, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 2}, {"arrows": "to", "from": 0, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 3}, {"arrows": "to", "from": 0, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 4}, {"arrows": "to", "from": 0, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 5}, {"arrows": "to", "from": 6, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 7}, {"arrows": "to", "from": 6, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 8}, {"arrows": "to", "from": 6, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 9}, {"arrows": "to", "from": 6, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 10}, {"arrows": "to", "from": 6, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 11}, {"arrows": "to", "from": 12, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 13}, {"arrows": "to", "from": 12, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 14}, {"arrows": "to", "from": 12, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 15}, {"arrows": "to", "from": 12, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 16}, {"arrows": "to", "from": 12, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 17}, {"arrows": "to", "from": 18, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 7}, {"arrows": "to", "from": 18, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 9}, {"arrows": "to", "from": 18, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 19}, {"arrows": "to", "from": 18, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 20}, {"arrows": "to", "from": 18, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 11}, {"arrows": "to", "from": 21, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 22}, {"arrows": "to", "from": 21, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 23}, {"arrows": "to", "from": 21, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 24}, {"arrows": "to", "from": 21, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 25}, {"arrows": "to", "from": 21, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 11}, {"arrows": "to", "from": 26, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 27}, {"arrows": "to", "from": 26, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 28}, {"arrows": "to", "from": 26, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 29}, {"arrows": "to", "from": 26, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 30}, {"arrows": "to", "from": 26, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 31}, {"arrows": "to", "from": 32, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 33}, {"arrows": "to", "from": 32, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 34}, {"arrows": "to", "from": 32, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 35}, {"arrows": "to", "from": 32, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 36}, {"arrows": "to", "from": 32, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 11}, {"arrows": "to", "from": 37, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 38}, {"arrows": "to", "from": 37, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 39}, {"arrows": "to", "from": 37, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 40}, {"arrows": "to", "from": 37, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 41}, {"arrows": "to", "from": 37, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 42}, {"arrows": "to", "from": 43, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 13}, {"arrows": "to", "from": 43, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 44}, {"arrows": "to", "from": 43, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 45}, {"arrows": "to", "from": 43, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 46}, {"arrows": "to", "from": 43, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 47}, {"arrows": "to", "from": 48, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 49}, {"arrows": "to", "from": 48, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 50}, {"arrows": "to", "from": 48, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 51}, {"arrows": "to", "from": 48, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 52}, {"arrows": "to", "from": 48, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 5}, {"arrows": "to", "from": 53, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 27}, {"arrows": "to", "from": 53, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 28}, {"arrows": "to", "from": 53, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 30}, {"arrows": "to", "from": 53, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 54}, {"arrows": "to", "from": 53, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 31}, {"arrows": "to", "from": 55, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 56}, {"arrows": "to", "from": 55, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 57}, {"arrows": "to", "from": 55, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 58}, {"arrows": "to", "from": 55, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 59}, {"arrows": "to", "from": 55, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 60}, {"arrows": "to", "from": 61, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 62}, {"arrows": "to", "from": 61, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 63}, {"arrows": "to", "from": 61, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 64}, {"arrows": "to", "from": 61, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 65}, {"arrows": "to", "from": 61, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 66}, {"arrows": "to", "from": 67, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 27}, {"arrows": "to", "from": 67, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 28}, {"arrows": "to", "from": 67, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 29}, {"arrows": "to", "from": 67, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 30}, {"arrows": "to", "from": 67, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 31}, {"arrows": "to", "from": 68, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 69}, {"arrows": "to", "from": 68, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 70}, {"arrows": "to", "from": 68, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 71}, {"arrows": "to", "from": 68, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 72}, {"arrows": "to", "from": 68, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 73}, {"arrows": "to", "from": 74, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 75}, {"arrows": "to", "from": 74, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 19}, {"arrows": "to", "from": 74, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 76}, {"arrows": "to", "from": 74, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 77}, {"arrows": "to", "from": 74, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 78}, {"arrows": "to", "from": 79, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 80}, {"arrows": "to", "from": 79, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 81}, {"arrows": "to", "from": 79, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 82}, {"arrows": "to", "from": 79, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 83}, {"arrows": "to", "from": 79, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 84}, {"arrows": "to", "from": 85, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 86}, {"arrows": "to", "from": 85, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 87}, {"arrows": "to", "from": 85, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 88}, {"arrows": "to", "from": 85, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 89}, {"arrows": "to", "from": 85, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 5}, {"arrows": "to", "from": 90, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 91}, {"arrows": "to", "from": 90, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 92}, {"arrows": "to", "from": 90, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 93}, {"arrows": "to", "from": 90, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 94}, {"arrows": "to", "from": 90, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 42}, {"arrows": "to", "from": 95, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 96}, {"arrows": "to", "from": 95, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 97}, {"arrows": "to", "from": 95, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 98}, {"arrows": "to", "from": 95, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 99}, {"arrows": "to", "from": 95, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 100}, {"arrows": "to", "from": 101, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 102}, {"arrows": "to", "from": 101, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 103}, {"arrows": "to", "from": 101, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 104}, {"arrows": "to", "from": 101, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 105}, {"arrows": "to", "from": 101, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 5}, {"arrows": "to", "from": 106, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 13}, {"arrows": "to", "from": 106, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 107}, {"arrows": "to", "from": 106, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 108}, {"arrows": "to", "from": 106, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 109}, {"arrows": "to", "from": 106, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 110}, {"arrows": "to", "from": 111, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 112}, {"arrows": "to", "from": 111, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 113}, {"arrows": "to", "from": 111, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 114}, {"arrows": "to", "from": 111, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 115}, {"arrows": "to", "from": 111, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 11}, {"arrows": "to", "from": 116, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 117}, {"arrows": "to", "from": 116, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 118}, {"arrows": "to", "from": 116, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 119}, {"arrows": "to", "from": 116, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 120}, {"arrows": "to", "from": 116, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 121}, {"arrows": "to", "from": 122, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 38}, {"arrows": "to", "from": 122, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 57}, {"arrows": "to", "from": 122, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 123}, {"arrows": "to", "from": 122, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 124}, {"arrows": "to", "from": 122, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 125}, {"arrows": "to", "from": 126, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 1}, {"arrows": "to", "from": 126, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 57}, {"arrows": "to", "from": 126, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 127}, {"arrows": "to", "from": 126, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 128}, {"arrows": "to", "from": 126, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 129}, {"arrows": "to", "from": 130, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 131}, {"arrows": "to", "from": 130, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 132}, {"arrows": "to", "from": 130, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 133}, {"arrows": "to", "from": 130, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 134}, {"arrows": "to", "from": 130, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 135}, {"arrows": "to", "from": 136, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 49}, {"arrows": "to", "from": 136, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 3}, {"arrows": "to", "from": 136, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 50}, {"arrows": "to", "from": 136, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 137}, {"arrows": "to", "from": 136, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 138}, {"arrows": "to", "from": 139, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 140}, {"arrows": "to", "from": 139, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 141}, {"arrows": "to", "from": 139, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 142}, {"arrows": "to", "from": 139, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 143}, {"arrows": "to", "from": 139, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 144}, {"arrows": "to", "from": 145, "label": "DIRECTED_BY", "title": "DIRECTED_BY", "to": 146}, {"arrows": "to", "from": 145, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 81}, {"arrows": "to", "from": 145, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 82}, {"arrows": "to", "from": 145, "label": "HAS_ACTOR", "title": "HAS_ACTOR", "to": 83}, {"arrows": "to", "from": 145, "label": "HAS_GENRE", "title": "HAS_GENRE", "to": 84}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
